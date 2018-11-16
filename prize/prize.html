@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="prize.css">
+</head>
+
+<body>
+    <div class="cover"></div>
+
+
+    <!-- 弹出框 -->
+
+    <div class="pop" id="sorry">
+        <div class="detail">对不起，你无可使用的奖励卡时长。</div>
+        <div class="btn cancel">确认</div>
+    </div>
+    <!--
+        <div class="pop" id="wrong">
+            <div class="detail">手机号或者卡密错误，请重新输入。</div>
+            <div class="wrap-btn">
+                <div class="btn cancel">确认</div>
+                <div class="btn cancel">取消</div>
+            </div>
+        </div>
+-->
+    <!-- <div class="pop" id="success">
+            <div class="detail">
+                <div>
+                    可使用奖励卡时长:
+                    <text>13.2小时</text>
+                </div>
+                <div>
+                    本次上网时长：
+                    <div class="reduce">-</div>
+                    <text>0.5h</text>
+                    <div class="add">+</div>
+                </div>
+
+            </div>
+            <div class="wrap-btn">
+                <div class="comfirm">确认</div>
+                <div class="btn cancel">取消</div>
+            </div>
+        </div> -->
+
+    <!-- 页面主体 -->
+    <div id="content">
+        <div id="bg-img">
+            <img src="pri-bgc.png" alt="" srcset="">
+        </div>
+        <div>
+            奖励卡
+        </div>
+        <div>
+            <input id="phone" type="text" placeholder="请输入手机号">
+        </div>
+        <div>
+            <input id="password" type="text" placeholder="请输入卡密">
+        </div>
+        <div>
+            <input id="time" type="text" placeholder="请输入时长">
+        </div>
+
+        <div id="submit">确定</div>
+    </div>
+
+    <script src="../jquery-1.11.3.js"></script>
+
+    <script>
+        // $('#submit').click(function() {
+        //     var phone = $('#phone').val();
+        //     var password = $('#password').val();
+        //     var time = $('#time').val();
+        //     var req = {
+        //         'phone': phone,
+        //         'password': password,
+        //         'time': time
+        //     };
+        //     console.log(JSON.stringify(req))
+        //     $.ajax({
+        //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
+        //         data: JSON.stringify(req),
+        //         dataType: 'json',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         success: function(res) {
+        //             console.log(res)
+        //         },
+        //         error: function() {
+        //             console.log("worry")
+        //         }
+        //     })
+        // })
+
+        $('#submit').click(function() {
+            $('.cover').addClass('show-cover');
+            $('.pop').addClass('show-pop');
+        })
+
+        $('.cancel').click(function() {
+            $('.cover').removeClass('show-cover');
+            $('.pop').removeClass('show-pop');
+        })
+    </script>
+</body>
+
+</html>
