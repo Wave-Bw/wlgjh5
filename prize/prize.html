@@ -56,47 +56,53 @@
         <div>
             奖励卡
         </div>
-        <div>
-            <img src="phone.png" alt="">
-            <input id="phone" type="text" placeholder="请输入手机号">
+        <div id="form">
+            <div id="ipt-phone">
+                <img src="phone.png" alt="">
+                <input id="phone" type="text" placeholder="请输入手机号">
+            </div>
+            <div id="ipt-pwd">
+                <img src="lock.png" alt="">
+                <input id="password" type="text" placeholder="请输入卡密">
+            </div>
+            <div id="ipt-time">
+                <img src="time.png" alt="">
+                <input id="time" type="text" placeholder="请输入时长">
+            </div>
         </div>
-        <div>
-            <input id="password" type="text" placeholder="请输入卡密">
-        </div>
-        <div><img src="lock.png" alt="">
-            <input id="time" type="text" placeholder="请输入时长">
-        </div>
-
         <div id="submit">确定</div>
     </div>
 
     <script src="../jquery-1.11.3.js"></script>
 
     <script>
-        // $('#submit').click(function() {
-        //     var phone = $('#phone').val();
-        //     var password = $('#password').val();
-        //     var time = $('#time').val();
-        //     var req = {
-        //         'phone': phone,
-        //         'password': password,
-        //         'time': time
-        //     };
-        //     console.log(JSON.stringify(req))
-        //     $.ajax({
-        //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
-        //         data: JSON.stringify(req),
-        //         dataType: 'json',
-        //         type: 'post',
-        //         contentType: 'application/json',
-        //         success: function(res) {
-        //             console.log(res)
-        //         },
-        //         error: function() {
-        //             console.log("worry")
-        //         }
-        //     })
-        // })
+        $(function() {
+                console.log($('body').css('height'))
+            })
+            // $('#submit').click(function() {
+            //     var phone = $('#phone').val();
+            //     var password = $('#password').val();
+            //     var time = $('#time').val();
+            //     var req = {
+            //         'phone': phone,
+            //         'password': password,
+            //         'time': time
+            //     };
+            //     console.log(JSON.stringify(req))
+            //     $.ajax({
+            //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
+            //         data: JSON.stringify(req),
+            //         dataType: 'json',
+            //         type: 'post',
+            //         contentType: 'application/json',
+            //         success: function(res) {
+            //             console.log(res)
+            //         },
+            //         error: function() {
+            //             console.log("worry")
+            //         }
+            //     })
+            // })
 
         $('#submit').click(function() {
             $('.cover').addClass('show-cover');
