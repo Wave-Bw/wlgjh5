@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>奖励卡</title>
     <link rel="stylesheet" href="prize.css">
 </head>
 
@@ -72,48 +72,48 @@
         </div>
         <div id="submit">确定</div>
     </div>
-
-    <script src="../jquery-1.11.3.js"></script>
-
-    <script>
-        $(function() {
-                console.log($('body').css('height'))
-            })
-            // $('#submit').click(function() {
-            //     var phone = $('#phone').val();
-            //     var password = $('#password').val();
-            //     var time = $('#time').val();
-            //     var req = {
-            //         'phone': phone,
-            //         'password': password,
-            //         'time': time
-            //     };
-            //     console.log(JSON.stringify(req))
-            //     $.ajax({
-            //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
-            //         data: JSON.stringify(req),
-            //         dataType: 'json',
-            //         type: 'post',
-            //         contentType: 'application/json',
-            //         success: function(res) {
-            //             console.log(res)
-            //         },
-            //         error: function() {
-            //             console.log("worry")
-            //         }
-            //     })
-            // })
-
-        $('#submit').click(function() {
-            $('.cover').addClass('show-cover');
-            $('.pop').addClass('show-pop');
-        })
-
-        $('.cancel').click(function() {
-            $('.cover').removeClass('show-cover');
-            $('.pop').removeClass('show-pop');
-        })
-    </script>
 </body>
+<script src="../jquery-1.11.3.js"></script>
+
+<script>
+    $(function() {
+            console.log($('body').css('height'))
+        })
+        // $('#submit').click(function() {
+        //     var phone = $('#phone').val();
+        //     var password = $('#password').val();
+        //     var time = $('#time').val();
+        //     var req = {
+        //         'phone': phone,
+        //         'password': password,
+        //         'time': time
+        //     };
+        //     console.log(JSON.stringify(req))
+        //     $.ajax({
+        //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
+        //         data: JSON.stringify(req),
+        //         dataType: 'json',
+        //         type: 'post',
+        //         contentType: 'application/json',
+        //         success: function(res) {
+        //             console.log(res)
+        //         },
+        //         error: function() {
+        //             console.log("worry")
+        //         }
+        //     })
+        // })
+
+    $('#submit').click(function() {
+        $('.cover').addClass('show-cover');
+        $('.pop').addClass('show-pop');
+    })
+
+    $('.cancel').click(function() {
+        $('.cover').removeClass('show-cover');
+        $('.pop').removeClass('show-pop');
+    })
+</script>
+
 
 </html>

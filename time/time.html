@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>时段受限</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            background: #11c8ac;
+            display: flex;
+            align-items: center;
+        }
+        
+        #content {
+            width: 320px;
+            height: 568px;
+            background: #11c8ac;
+            margin: auto;
+            padding: 10px 28px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        #bg-img>img {
+            width: 210px;
+            height: 180px;
+        }
+        
+        #detail {
+            text-align: center;
+        }
+        
+        #btn {
+            color: #11c8ac;
+            background: #fff;
+            border-radius: 4px;
+            padding: 4px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div id="bg-img">
+            <img src="time.png" alt="" srcset="">
+        </div>
+        <div id="title">
+            时段受限
+        </div>
+        <div id="detail">
+            <div>该时段处于管控中，网络已断开，请使用以下方式恢复网络：</div>
+            <div>1、请联系家长放开时段管控</div>
+            <div>2、使用上网奖励卡</div>
+        </div>
+        <div id="btn">
+            使用奖励卡
+        </div>
+    </div>
+</body>
+
+<script>
+    var btn = document.getElementById('btn');
+
+    btn.onclick = function() {
+        window.open('../prize/prize.html', '_self')
+    }
+</script>
+
+</html>
