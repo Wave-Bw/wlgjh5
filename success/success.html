@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>教育资源模式</title>
+    <title>设置成功</title>
     <style>
         * {
             box-sizing: border-box;
@@ -38,25 +38,13 @@
             z-index: 1;
         }
         
-        #title {
-            font-size: 26px;
-        }
-        
         #bg-img>img {
-            width: 210px;
+            width: 180px;
             height: 180px;
         }
         
         #detail {
             text-align: center;
-        }
-        
-        #btn {
-            color: #11c8ac;
-            background: #fff;
-            border-radius: 4px;
-            padding: 4px 20px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -64,26 +52,18 @@
 <body>
     <div id="content">
         <div id="bg-img">
-            <img src="edu.png" alt="" srcset="">
-        </div>
-        <div id="title">
-            教育资源
+            <img src="success.png" alt="" srcset="">
         </div>
         <div id="detail">
-            您访问的地址不在教育资源网址库内，暂时无法访问。
-        </div>
-        <div id="btn">
-            使用奖励卡
+            您本次可上网
+            <span id="time"></span> 小时
         </div>
     </div>
+    <script src="../jquery-1.11.3.js"></script>
+    <script>
+        var time = window.location.search.substr(6);
+        $('#time').html(time)
+    </script>
 </body>
-
-<script>
-    var btn = document.getElementById('btn');
-
-    btn.onclick = function() {
-        window.open('../prize/prize.html', '_self')
-    }
-</script>
 
 </html>

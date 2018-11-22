@@ -37,9 +37,9 @@ body {
 .pop {
     width: 280px;
     height: 180px;
-    padding-top: 16px;
+    padding: 16px 0 12px;
     background: #fff;
-    border-radius: 16px;
+    border-radius: 14px;
     transition: all 0.25s linear;
     text-align: center;
     display: flex;
@@ -66,9 +66,13 @@ body {
     text-align: center;
 }
 
+.detail>div {
+    margin-bottom: 20px;
+}
+
 .btn {
     width: 80%;
-    border-radius: 14px;
+    border-radius: 8px;
     padding: 6px 0;
     background: linear-gradient(to right bottom, #44f2d8, #32b29e);
 }
@@ -81,6 +85,7 @@ body {
 
 .wrap-btn>.btn {
     width: 42%;
+    text-align: center;
 }
 
 .reduce,
@@ -89,6 +94,12 @@ body {
     color: #fff;
     background: #ddd;
     display: inline-block;
+}
+
+#time {
+    display: inline-block;
+    width: 36px;
+    text-align: center;
 }
 
 #content {
@@ -103,25 +114,27 @@ body {
     z-index: 1;
 }
 
+#title {
+    font-size: 26px;
+}
+
 #bg-img>img {
     width: 210px;
     height: 180px;
 }
 
 #ipt-phone,
-#ipt-pwd,
-#ipt-time {
-    padding: 2px 20px;
+#ipt-pwd {
+    padding: 6px 20px;
     border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
 }
 
 #ipt-phone>img,
-#ipt-pwd>img,
-#ipt-time>img {
-    width: 28px;
-    height: 34px;
+#ipt-pwd>img {
+    width: 26px;
+    height: 30px;
     margin-right: 12px;
 }
 
@@ -137,8 +150,17 @@ input::-webkit-input-placeholder {
     color: #fff;
 }
 
+#back {
+    height: 40px;
+    line-height: 28px;
+    color: #11c8ac;
+    background: #fff;
+    border-radius: 8px;
+}
+
 #submit {
-    padding: 10px 30px;
+    height: 40px;
+    line-height: 28px;
     background: #6bedd9;
-    text-align: center;
+    border-radius: 8px;
 }

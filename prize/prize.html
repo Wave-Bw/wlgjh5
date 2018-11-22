@@ -12,48 +12,39 @@
 <body>
     <div class="cover"></div>
 
-
     <!-- 弹出框 -->
-
-    <div class="pop" id="sorry">
-        <div class="detail">对不起，你无可使用的奖励卡时长。</div>
+    <div class="pop" id="wrong">
+        <div class="detail">手机号或者卡密错误，请重新输入。</div>
         <div class="btn cancel">确认</div>
     </div>
-    <!--
-        <div class="pop" id="wrong">
-            <div class="detail">手机号或者卡密错误，请重新输入。</div>
-            <div class="wrap-btn">
-                <div class="btn cancel">确认</div>
-                <div class="btn cancel">取消</div>
-            </div>
-        </div>
--->
-    <!-- <div class="pop" id="success">
-            <div class="detail">
-                <div>
-                    可使用奖励卡时长:
-                    <text>13.2小时</text>
-                </div>
-                <div>
-                    本次上网时长：
-                    <div class="reduce">-</div>
-                    <text>0.5h</text>
-                    <div class="add">+</div>
-                </div>
 
+    <!-- 成功后，确实本次上网时长 -->
+    <div class="pop" id="success">
+        <div class="detail">
+            <div>
+                可使用奖励卡时长:
+                <text id="total-time"></text>小时
             </div>
-            <div class="wrap-btn">
-                <div class="comfirm">确认</div>
-                <div class="btn cancel">取消</div>
+            <div>
+                本次上网时长：
+                <div class="reduce">-</div>
+                <text id="time">0.0h</text>
+                <div class="add">+</div>
             </div>
-        </div> -->
+
+        </div>
+        <div class="wrap-btn">
+            <div class="btn comfirm">确认</div>
+            <div class="btn cancel">取消</div>
+        </div>
+    </div>
 
     <!-- 页面主体 -->
     <div id="content">
         <div id="bg-img">
             <img src="pri-bgc.png" alt="" srcset="">
         </div>
-        <div>
+        <div id="title">
             奖励卡
         </div>
         <div id="form">
@@ -65,53 +56,117 @@
                 <img src="lock.png" alt="">
                 <input id="password" type="text" placeholder="请输入卡密">
             </div>
-            <div id="ipt-time">
-                <img src="time.png" alt="">
-                <input id="time" type="text" placeholder="请输入时长">
-            </div>
         </div>
-        <div id="submit">确定</div>
+        <div class="wrap-btn">
+            <div id="back" class="btn">取消</div>
+            <div id="submit" class="btn">确定</div>
+        </div>
     </div>
 </body>
 <script src="../jquery-1.11.3.js"></script>
 
 <script>
     $(function() {
-            console.log($('body').css('height'))
+
+        var req = {
+            'phone': '',
+            'password': '',
+            'time': ''
+        }
+
+        $('#submit').click(function() {
+
+            var phone = $('#phone').val();
+            var password = $('#password').val();
+
+            function testEntry() {
+                var len = password.length;
+                if ((/^1[34578]\d{9}$/.test(phone)) && (/^\d{6}$/.test(password))) {
+                    req.phone = phone;
+                    req.password = password;
+                    return true;
+                } else {
+                    $('#wrong').addClass('show-pop')
+                }
+            }
+
+            $('.cover').addClass('show-cover');
+
+            if (testEntry()) {
+                var url = 'http://192.168.10.191:8080/wlgj/api/terminal/reward?phone=' + req.phone + '&password=' + req.password;
+
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function(res) {
+                        //var that = this;
+                        if (res.code == 0) {
+                            successful(res)
+                        } else {
+                            $('#wrong').addClass('show-pop');
+                        }
+                    },
+                    error: function() {
+                        console.log(res)
+                            //$('#wrong').addClass('show-pop');
+                    }
+                })
+            }
+
         })
-        // $('#submit').click(function() {
-        //     var phone = $('#phone').val();
-        //     var password = $('#password').val();
-        //     var time = $('#time').val();
-        //     var req = {
-        //         'phone': phone,
-        //         'password': password,
-        //         'time': time
-        //     };
-        //     console.log(JSON.stringify(req))
-        //     $.ajax({
-        //         url: 'http://192.168.6.2:8080/wlgj/api/terminal/reward',
-        //         data: JSON.stringify(req),
-        //         dataType: 'json',
-        //         type: 'post',
-        //         contentType: 'application/json',
-        //         success: function(res) {
-        //             console.log(res)
-        //         },
-        //         error: function() {
-        //             console.log("worry")
-        //         }
-        //     })
-        // })
 
-    $('#submit').click(function() {
-        $('.cover').addClass('show-cover');
-        $('.pop').addClass('show-pop');
-    })
+        $('.comfirm').click(function() {
+            var time = parseFloat($('#time').text());
+            req.time = time * 60;
 
-    $('.cancel').click(function() {
-        $('.cover').removeClass('show-cover');
-        $('.pop').removeClass('show-pop');
+            $.ajax({
+                url: 'http://192.168.10.191:8080/wlgj/api/terminal/reward',
+                //url: 'https://easy-mock.com/mock/5bbdb9e2a485144c107af389/pst',
+                data: JSON.stringify(req),
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/json',
+                success: function(res) {
+                    window.open('../success/success.html?time=' + time, '_self')
+                }
+            })
+        })
+
+        function successful(res) {
+            console.log(res)
+            $('#success').addClass('show-pop');
+            var totalTime = (res.msg.remainder / 60).toFixed(1);
+            $('#total-time').text(totalTime);
+        }
+
+        $('.cancel').click(function() {
+            $('.cover').removeClass('show-cover');
+            $('.pop').removeClass('show-pop');
+        })
+
+        $('.reduce').click(function() {
+            var time = parseFloat($('#time').text());
+
+            if (time > 0) {
+                time = (time -= .5).toFixed(1);
+                (time < 0) && (time = '0.0');
+                $('#time').text(time + 'h');
+            }
+        })
+
+        $('.add').click(function() {
+            var time = parseFloat($('#time').text());
+            var totalTime = $('#total-time').text();
+
+            if (time < totalTime) {
+                time = (time += .5).toFixed(1);
+                (time > totalTime) && (time = totalTime);
+                $('#time').text(time + 'h');
+            }
+        })
+
     })
 </script>
 
