@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>教育资源模式</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            background: #11c8ac;
+            display: flex;
+            align-items: center;
+        }
+        
+        #content {
+            width: 320px;
+            height: 568px;
+            padding-bottom: 30px;
+            background: #11c8ac;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        #title {
+            font-size: 26px;
+        }
+        
+        #bg-img>img {
+            width: 210px;
+            height: 180px;
+        }
+        
+        #detail {
+            text-align: center;
+        }
+        
+        .use-card>div {
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .wrap {
+            width: 94px;
+            display: flex;
+        }
+        
+        #reduce,
+        #add {
+            width: 22px;
+            height: 22px;
+            text-align: center;
+            line-height: 22px;
+            color: #11c8ac;
+            background: #fff;
+        }
+        
+        #time {
+            width: 50px;
+            color: rgb(243, 208, 7);
+            text-align: center;
+        }
+        
+        #comfirm {
+            width: 120px;
+            height: 40px;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 40px;
+            color: #11c8ac;
+            background: #fff;
+        }
+        
+        .dis-none {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div id="bg-img">
+            <img src="../education/edu.png" alt="" srcset="">
+        </div>
+        <div id="title"> </div>
+        <div id="detail"></div>
+
+        <!-- 可使用奖励卡时 -->
+        <div class="use-card">
+            <div>
+                您本次可使用的上网奖励卡时长
+                <span id="total-time"></span> 小时
+            </div>
+            <div>
+                设置本次上网时长为
+            </div>
+            <div class="wrap">
+                <div id="reduce">-</div>
+                <div id="time">0.0h</div>
+                <div id="add">+</div>
+            </div>
+            <div id="comfirm">确认</div>
+        </div>
+    </div>
+</body>
+<script src="../jquery-1.11.3.js"></script>
+<script>
+    $(function() {
+        var req = {
+            'phone': '',
+            'password': '',
+            'time': ''
+        }
+
+        var locaArr = window.location.href.split("=");
+        var phone = locaArr[1].substr(0, 11);
+        var password = locaArr[2].substr(0, 7);
+        var time = '';
+
+        req.phone = phone;
+        req.password = password;
+
+        var url = '/wlgj/api/terminal/reward?phone=' + phone + '&password=' + password;
+
+        var showTotal = function(rmd) {
+            var rmd = Math.floor(rmd / 60 * 10);
+            var totalTime = (rmd / 10).toFixed(1);
+            $('#total-time').text(totalTime);
+        }
+
+        // 检查是否可使用奖励卡
+        var ifUseCard = function(msg) {
+            if (msg.isOffLine == 1) {
+                // 被断网
+                window.open('../off/off.html', '_self')
+            } else if (msg.mode == 3) {
+                window.open('../free/free.html', '_self')
+            } else if (msg.mode == 2 && msg.isFree == 1) {
+                eduMode();
+                showTotal(msg.remainder);
+            } else {
+                timeMode();
+                showTotal(msg.remainder);
+            }
+        }
+
+        // 检查账号密码是否错误
+        var checkPwd = function(res) {
+            if (res.code == 0) {
+                ifUseCard(res.msg)
+            } else {
+                alert('账号或密码错误！')
+            }
+        }
+
+        // 教育资源模式
+        var eduMode = function() {
+            $('#title').html("教育资源");
+            $('#detail').html("仅可访问教育相关的网站及APP");
+        }
+
+        // 时段受限
+        var timeMode = function() {
+            $('#title').html("时段受限");
+            $('#detail').html("现时段处于管控中，网络已断开");
+        }
+
+        console.log(req);
+
+        // 获取总时长
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            contentType: 'application/json',
+            success: function(res) {
+                console.log(res)
+                checkPwd(res);
+            },
+            error: function() {
+                console.log(res)
+            }
+        })
+
+        $('#reduce').click(function() {
+            time = parseFloat($('#time').text());
+
+            if (time > 0) {
+                time = (time -= .5).toFixed(1);
+                (time < 0) && (time = '0.0');
+                $('#time').text(time + 'h');
+            }
+        })
+
+        $('#add').click(function() {
+            time = parseFloat($('#time').text());
+            var totalTime = $('#total-time').text();
+
+            if (time < totalTime) {
+                time = (time += .5).toFixed(1);
+                (time > totalTime) && (time = totalTime);
+                $('#time').text(time + 'h');
+            }
+        })
+
+        // 确定使用上网卡
+        $('#comfirm').click(function() {
+            time = parseFloat($('#time').text());
+
+            if (time == 0) {
+                alert('请确认本次上网时长不为0')
+            } else {
+                req.time = time * 60;
+
+                $.ajax({
+                    url: '/wlgj/api/terminal/reward',
+                    data: JSON.stringify(req),
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function(res) {
+                        console.log(res)
+                        if (res.code == 0) {
+                            window.open('../success/success.html?time=' + time, '_self')
+                        } else {
+                            alert(res.msg)
+                        }
+                    }
+                })
+            }
+        })
+
+
+    })
+</script>
+
+</html>

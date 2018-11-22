@@ -36,8 +36,8 @@ body {
 
 .pop {
     width: 280px;
-    height: 180px;
-    padding: 16px 0 12px;
+    min-height: 150px;
+    padding: 16px;
     background: #fff;
     border-radius: 14px;
     transition: all 0.25s linear;
@@ -56,18 +56,29 @@ body {
 
 .show-pop {
     opacity: 1;
-    top: 30%;
+    top: 32%;
     z-index: 100;
 }
 
 .detail {
-    width: 74%;
     color: #000;
     text-align: center;
+    margin-bottom: 16px;
 }
 
-.detail>div {
-    margin-bottom: 20px;
+.detail>div,
+.plz-config {
+    margin-bottom: 14px;
+    font-size: 14px;
+}
+
+.detail .this-time {
+    margin-bottom: 0;
+}
+
+.err-msg {
+    display: inline-block;
+    width: 70%;
 }
 
 .btn {
@@ -92,13 +103,13 @@ body {
 .add {
     padding: 0 4px;
     color: #fff;
-    background: #ddd;
+    background: linear-gradient(to right bottom, #32b29e, #44f2d8);
     display: inline-block;
 }
 
 #time {
     display: inline-block;
-    width: 36px;
+    width: 52px;
     text-align: center;
 }
 

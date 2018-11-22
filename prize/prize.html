@@ -14,7 +14,8 @@
 
     <!-- 弹出框 -->
     <div class="pop" id="wrong">
-        <div class="detail">手机号或者卡密错误，请重新输入。</div>
+        <div class="detail">
+            <span class="err-msg">手机号或者卡密错误，请重新输入。</span></div>
         <div class="btn cancel">确认</div>
     </div>
 
@@ -22,17 +23,24 @@
     <div class="pop" id="success">
         <div class="detail">
             <div>
-                可使用奖励卡时长:
-                <text id="total-time"></text>小时
+                <span>您上次使用时长：</span>
+                <span id="last-use"></span>
             </div>
             <div>
-                本次上网时长：
-                <div class="reduce">-</div>
-                <text id="time">0.0h</text>
-                <div class="add">+</div>
+                可使用时长:
+                <span id="total-time"></span>小时
+            </div>
+            <div class="this-time">
+                <div class="plz-config">请设置本次上网时长:</div>
+                <div>
+                    <div class="reduce">-</div>
+                    <span id="time">0.0h</span>
+                    <div class="add">+</div>
+                </div>
             </div>
 
         </div>
+
         <div class="wrap-btn">
             <div class="btn comfirm">确认</div>
             <div class="btn cancel">取消</div>
@@ -93,7 +101,7 @@
             $('.cover').addClass('show-cover');
 
             if (testEntry()) {
-                var url = 'http://192.168.10.191:8080/wlgj/api/terminal/reward?phone=' + req.phone + '&password=' + req.password;
+                var url = '/wlgj/api/terminal/reward?phone=' + req.phone + '&password=' + req.password;
 
                 $.ajax({
                     url: url,
@@ -101,7 +109,6 @@
                     type: 'GET',
                     contentType: 'application/json',
                     success: function(res) {
-                        //var that = this;
                         if (res.code == 0) {
                             successful(res)
                         } else {
@@ -110,7 +117,6 @@
                     },
                     error: function() {
                         console.log(res)
-                            //$('#wrong').addClass('show-pop');
                     }
                 })
             }
@@ -119,26 +125,43 @@
 
         $('.comfirm').click(function() {
             var time = parseFloat($('#time').text());
-            req.time = time * 60;
 
-            $.ajax({
-                url: 'http://192.168.10.191:8080/wlgj/api/terminal/reward',
-                //url: 'https://easy-mock.com/mock/5bbdb9e2a485144c107af389/pst',
-                data: JSON.stringify(req),
-                dataType: 'json',
-                type: 'POST',
-                contentType: 'application/json',
-                success: function(res) {
-                    window.open('../success/success.html?time=' + time, '_self')
-                }
-            })
+            if (time == 0) {
+                alert('请确认本次上网时长不为0')
+            } else {
+                req.time = time * 60;
+
+                $.ajax({
+                    url: '/wlgj/api/terminal/reward',
+                    data: JSON.stringify(req),
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function(res) {
+                        console.log(res)
+                        if (res.code == 0) {
+                            window.open('../success/success.html?time=' + time, '_self')
+                        } else {
+                            $('#success').removeClass('show-pop');
+                            $('#wrong .detail').html(res.msg);
+                            $('#wrong').addClass('show-pop');
+                        }
+                    }
+                })
+            }
+
         })
 
         function successful(res) {
             console.log(res)
             $('#success').addClass('show-pop');
-            var totalTime = (res.msg.remainder / 60).toFixed(1);
+
+            var lastUse = (res.msg.usedDetail[0].usedTime / 60).toFixed(1);
+            var remainder = Math.floor(res.msg.remainder / 60 * 10);
+            var totalTime = (remainder / 10).toFixed(1);
+
             $('#total-time').text(totalTime);
+            $('#last-use').html(lastUse + "小时");
         }
 
         $('.cancel').click(function() {
@@ -167,6 +190,9 @@
             }
         })
 
+        $('#back').click(function() {
+            window.history.back(-1);
+        })
     })
 </script>
 
