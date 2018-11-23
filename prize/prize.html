@@ -82,6 +82,27 @@
             'time': ''
         }
 
+        function successful(msg) {
+            console.log(msg)
+            var usedTime = '';
+
+            $('#success').addClass('show-pop');
+
+            if (msg.usedDetail.length !== 0) {
+                usedTime = msg.usedDetail[0].usedTime;
+
+            } else {
+                usedTime = 0;
+            }
+
+            var remainder = Math.floor(msg.remainder / 60 * 10);
+            var totalTime = (remainder / 10).toFixed(1);
+            var lastUse = (usedTime / 60).toFixed(1);
+
+            $('#total-time').text(totalTime);
+            $('#last-use').html(lastUse + "小时");
+        }
+
         $('#submit').click(function() {
 
             var phone = $('#phone').val();
@@ -110,7 +131,7 @@
                     contentType: 'application/json',
                     success: function(res) {
                         if (res.code == 0) {
-                            successful(res)
+                            successful(res.msg)
                         } else {
                             $('#wrong').addClass('show-pop');
                         }
@@ -152,17 +173,6 @@
 
         })
 
-        function successful(res) {
-            console.log(res)
-            $('#success').addClass('show-pop');
-
-            var lastUse = (res.msg.usedDetail[0].usedTime / 60).toFixed(1);
-            var remainder = Math.floor(res.msg.remainder / 60 * 10);
-            var totalTime = (remainder / 10).toFixed(1);
-
-            $('#total-time').text(totalTime);
-            $('#last-use').html(lastUse + "小时");
-        }
 
         $('.cancel').click(function() {
             $('.cover').removeClass('show-cover');
